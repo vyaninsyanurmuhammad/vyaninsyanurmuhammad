@@ -17,6 +17,8 @@ import ProjectArchiveCard from "./components/project-archive-card";
 import WorkCard from "./components/work-card";
 import { contacts as contactLinks, navigations, projects, works } from "./data";
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Home() {
   const ref = useRef(null);
   const container = useRef<HTMLDivElement | null>(null);
@@ -40,66 +42,148 @@ export default function Home() {
   const { x, y } = useFollowPointerHook();
 
   useEffect(() => {
-    // Ensure plugin on client
-    gsap.registerPlugin(ScrollTrigger);
+    // Goal: stable, smooth, and ordered activation. Ensure "about" on first load without needing to scroll.
 
-    // Force initial active section to 'about' so it's highlighted on first paint
-    setIsActive("about");
+    type Key =
+      | "about"
+      | "work"
+      | "project"
+      | "education"
+      | "skills"
+      | "certificates";
+    const validKeys: Key[] = [
+      "about",
+      "work",
+      "project",
+      "education",
+      "skills",
+      "certificates",
+    ];
 
-    const aboutElement = aboutRef.current;
-    const projectsElement = projectsRef.current;
-    const jobsElement = jobsRef.current;
-    const educationElement = educationRef.current;
-    const skillsElement = skillsRef.current;
-    const certificatesElement = certificatesRef.current;
+    const sections: Array<{ el: HTMLElement | null; key: Key }> = [
+      { el: aboutRef.current as HTMLElement | null, key: "about" },
+      { el: jobsRef.current as HTMLElement | null, key: "work" },
+      { el: projectsRef.current as HTMLElement | null, key: "project" },
+      { el: educationRef.current as HTMLElement | null, key: "education" },
+      { el: skillsRef.current as HTMLElement | null, key: "skills" },
+      {
+        el: certificatesRef.current as HTMLElement | null,
+        key: "certificates",
+      },
+    ];
 
-    const triggers: ScrollTrigger[] = [];
+    // Force default "about" on load if no hash
+    const hash =
+      typeof window !== "undefined"
+        ? window.location.hash.replace("#", "")
+        : "";
+    if (hash && (validKeys as string[]).includes(hash)) {
+      setIsActive(hash as Key);
+    } else {
+      setIsActive("about");
+    }
 
-    const makeTrigger = (
-      el: Element | null,
-      set: () => void,
-      start = "top center",
-      end = "bottom center"
-    ) => {
-      if (!el) {
-        return;
+    let ticking = false;
+    let rafId = 0;
+
+    // Pick the last section whose top has crossed a "band" (40% viewport) => deterministic, ordered, no flicker.
+    const BAND_POSITION_RATIO = 0.4; // 40% of viewport height for section activation
+    const computeActive = () => {
+      const vh = window.innerHeight;
+      const bandY = vh * BAND_POSITION_RATIO;
+      let chosen: Key = "about";
+      let maxTop = Number.NEGATIVE_INFINITY;
+
+      for (const s of sections) {
+        if (!s.el) continue;
+        const rect = s.el.getBoundingClientRect();
+        // If section's top has passed the band, it's a candidate; take the closest one to the band.
+        if (rect.top <= bandY && rect.top > maxTop) {
+          maxTop = rect.top;
+          chosen = s.key;
+        }
       }
-      const t = ScrollTrigger.create({
-        trigger: el,
-        start, // valid "triggerPos viewportPos" format
-        end,
-        markers: false,
-        onEnter: set,
-        onEnterBack: set,
-        invalidateOnRefresh: true,
-      });
-      triggers.push(t);
+
+      setIsActive((prev) => (prev !== chosen ? chosen : prev));
     };
 
-    // Make 'about' considered active while it's anywhere broadly in view
-    // This avoids needing a tiny scroll to cross "top top".
-    makeTrigger(
-      aboutElement,
-      () => setIsActive("about"),
-      "top bottom-=20%",
-      "bottom top+=20%"
-    );
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      rafId = requestAnimationFrame(() => {
+        computeActive();
+        ticking = false;
+      });
+    };
 
-    // Other sections use a consistent, simple window to become active
-    makeTrigger(jobsElement, () => setIsActive("work"));
-    makeTrigger(projectsElement, () => setIsActive("project"));
-    makeTrigger(educationElement, () => setIsActive("education"));
-    makeTrigger(skillsElement, () => setIsActive("skills"));
-    makeTrigger(certificatesElement, () => setIsActive("certificates"));
+    // Initial compute after first paint
+    rafId = requestAnimationFrame(() => computeActive());
 
-    // Recalculate after layout/paint so initial state is correct
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
-      for (const t of triggers) {
-        t.kill();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (media.matches) return;
+
+    let ctx: { revert: () => void } | null = null;
+    let cancelled = false;
+    (async () => {
+      try {
+        const gsap = (await import("gsap")).default;
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        if (cancelled) return;
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Scope animations to this component for clean teardown
+        ctx = gsap.context(() => {
+          const sectionIds = [
+            "about",
+            "work",
+            "project",
+            "education",
+            "skills",
+            "certificates",
+          ];
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (!el) continue;
+            // Reveal inner elements smoothly
+            gsap.from(el.querySelectorAll("h1,h2,p,li,img,a,span"), {
+              opacity: 0,
+              y: 16,
+              duration: 0.6,
+              ease: "power2.out",
+              stagger: 0.05,
+              scrollTrigger: {
+                trigger: el,
+                start: "top 85%",
+                end: "bottom 60%",
+                toggleActions: "play none none reverse",
+              },
+            });
+          }
+        }, container) as unknown as { revert: () => void };
+      } catch {
+        // [v0] GSAP load failed: error handled silently
       }
-      ScrollTrigger.refresh();
+    })();
+
+    return () => {
+      cancelled = true;
+      try {
+        ctx?.revert();
+      } catch {
+        // [v0] GSAP revert failed: error handled silently
+      }
     };
   }, []);
 
