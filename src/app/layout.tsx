@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ScrollSmoothLayout from "@/components/layouts/scroll-smooth-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className="w-full" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} w-full bg-[#0E1200] antialiased`}
       >
-        {children}
+        <ScrollSmoothLayout>{children}</ScrollSmoothLayout>
       </body>
     </html>
   );
