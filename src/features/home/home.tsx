@@ -477,7 +477,7 @@ export default function Home() {
               </ul>
               <Link
                 className="group flex flex-row items-center justify-start gap-2 text-slate-100 hover:text-lime-400"
-                href="https://drive.google.com/file/d/1NZcKwzV2YaLcIZbN45QAOK7IiezVWG5c/view?usp=sharing"
+                href="https://drive.google.com/file/d/1wq-uPJVgFBDXqv8sMTfQJ5ZBK6mghf8A/view?usp=sharing"
               >
                 <span>See My ATS Resume</span>
                 <ArrowRight className="h-4 w-4 text-slate-100 group-hover:scale-125 group-hover:stroke-2 group-hover:text-lime-400" />
