@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import LoaderBrand from "@/components/brands/loader-brand";
-import Home from "@/features/home/home";
+import Experience from "@/features/experience/experience";
 
-export default function HomePage() {
+export default function ExperiencePage() {
   return (
     <Suspense fallback={<LoaderBrand />}>
-      <Home />
+      <Experience />
     </Suspense>
   );
 }

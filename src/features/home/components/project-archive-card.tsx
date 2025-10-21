@@ -38,7 +38,11 @@ const ProjectArchiveCard = ({
 
   return (
     <>
-      <button onClick={() => onLinkClick()} type="button">
+      <button
+        className="cursor-pointer"
+        onClick={() => onLinkClick()}
+        type="button"
+      >
         <div className="group hover:!opacity-100 relative flex flex-col items-start gap-6 group-hover/list:opacity-50 sm:flex-row">
           <div className="-inset-4 absolute z-0 rounded-xl bg-lime-400/10 opacity-0 backdrop-blur-md duration-200 group-hover:opacity-100" />
 
@@ -57,12 +61,10 @@ const ProjectArchiveCard = ({
             <div className="flex w-full flex-wrap gap-2">
               {tools?.map((data, i) => (
                 <span
-                  className="w-fit rounded-full bg-lime-400/10 px-4 py-1 group-hover:bg-lime-400/20"
+                  className="w-fit rounded-full bg-lime-400/10 px-4 py-1 font-mono text-slate-100 group-hover:bg-lime-400/20 group-hover:text-lime-400"
                   key={`${i}-${data}`}
                 >
-                  <p className="text-slate-100 group-hover:text-lime-400">
-                    {data}
-                  </p>
+                  {data}
                 </span>
               ))}
             </div>

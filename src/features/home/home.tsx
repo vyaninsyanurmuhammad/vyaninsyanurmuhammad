@@ -6,12 +6,12 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import CursorSpotlight from "@/components/common/cursor-spotlight";
 import DiscordIcon from "@/components/icons/discord-icon";
 import GitHubIcon from "@/components/icons/github-icon";
 import InstagramIcon from "@/components/icons/instagram-icon";
 import LinkedInIcon from "@/components/icons/linkedin-icon";
 import XIcon from "@/components/icons/x-icon";
-import useFollowPointerHook from "@/hooks/use-follow-pointer";
 import { cn } from "@/lib/utils";
 import ProjectArchiveCard from "./components/project-archive-card";
 import WorkCard from "./components/work-card";
@@ -20,7 +20,6 @@ import { contacts as contactLinks, navigations, projects, works } from "./data";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const ref = useRef(null);
   const container = useRef<HTMLDivElement | null>(null);
   const aboutRef = useRef<HTMLParagraphElement>(null);
   const projectsRef = useRef(null);
@@ -38,8 +37,6 @@ export default function Home() {
     | "certificates"
     | false
   >("about");
-
-  const { x, y } = useFollowPointerHook();
 
   useEffect(() => {
     // Goal: stable, smooth, and ordered activation. Ensure "about" on first load without needing to scroll.
@@ -201,14 +198,8 @@ export default function Home() {
   });
 
   return (
-    <main className="relative min-h-svh w-full">
-      <div
-        className="-z-0 pointer-events-none absolute inset-0 hidden text-white md:block"
-        ref={ref}
-        style={{
-          backgroundImage: `radial-gradient(600px at ${x}px ${y}px, rgba(192, 255, 0, 0.15), transparent 80%)`,
-        }}
-      />
+    <main className="relative min-h-svh w-full font-sans">
+      <CursorSpotlight />
       <div
         className="container mx-auto flex min-h-svh flex-col gap-20 px-2.5 md:grid md:grid-cols-2"
         ref={container}
@@ -364,7 +355,7 @@ export default function Home() {
                       />
                     )}
                   </AnimatePresence>
-                  <p className="text-slate-100 text-sm uppercase group-[.active]:text-lime-400">
+                  <p className="font-mono text-slate-100 text-sm uppercase group-[.active]:text-lime-400">
                     {data.title}
                   </p>
                 </Link>

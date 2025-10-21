@@ -119,4 +119,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  ::selection {
+    background-color: var(--color-lime-500);
+    color: var(--accent-foreground);
+  }
 }

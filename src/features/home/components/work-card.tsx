@@ -61,7 +61,7 @@ const WorkCard = ({
           <div className="flex w-full flex-wrap gap-2">
             {tools?.map((data, i) => (
               <span
-                className="w-fit rounded-full bg-lime-400/10 px-4 py-1 text-slate-100 group-hover:bg-lime-400/20 group-hover:text-lime-400"
+                className="w-fit rounded-full bg-lime-400/10 px-4 py-1 font-mono text-slate-100 group-hover:bg-lime-400/20 group-hover:text-lime-400"
                 key={`${i}-${data}`}
               >
                 {data}
