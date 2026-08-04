@@ -60,5 +60,33 @@
       }
     }
   },
-  "extends": ["ultracite"]
+  "extends": ["ultracite"],
+  "overrides": [
+    {
+      "includes": ["src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off",
+            "noDoubleEquals": "off"
+          },
+          "a11y": {
+            "noNoninteractiveElementInteractions": "off",
+            "useKeyWithClickEvents": "off"
+          },
+          "style": {
+            "noExportedImports": "off",
+            "noMagicNumbers": "off",
+            "noNestedTernary": "off"
+          },
+          "nursery": {
+            "useAnchorHref": "off"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "off"
+          }
+        }
+      }
+    }
+  ]
 }
