@@ -1,20 +1,18 @@
+import { portfolioCatalogItems } from "@/features/portfolio-catalog/data";
+import type { PortfolioCatalogItem } from "@/features/portfolio-catalog/types/catalog-item";
+
 export type NavItem = { title: string; href: string };
 
 export type WorkItem = {
   title: string;
   work: string;
+  period: string;
   description: string;
   href: string;
   tools: string[];
 };
 
-export type ProjectItem = {
-  image: string;
-  title: string;
-  description: string;
-  href: string[]; // bisa 1 atau lebih link
-  tools: string[];
-};
+export type ProjectItem = Omit<PortfolioCatalogItem, "slug" | "featured">;
 
 export type ContactLink =
   | { type: "github"; href: string }
@@ -27,102 +25,77 @@ export const navigations: NavItem[] = [
   { title: "About Me", href: "#about" },
   { title: "Work Experience", href: "#work" },
   { title: "Project Experience", href: "#project" },
+  { title: "Portfolio Catalog", href: "#catalog" },
 ];
 
 export const works: WorkItem[] = [
   {
     title: "Front End Web Developer",
     work: "WIT.ID",
+    period: "Sep 2024 – Present",
     description:
-      "Sep 2024 – Present. Built a multi-platform digital ecosystem for smart venues (smart kiosk, photobox, vending, POS, dashboard, booking) using Next.js, TypeScript, and Tailwind CSS. Shipped Gavra Trading Platform with community features, course management, and analytics (Next.js + Jotai). Maintained Royal Medika Pharmalab by fixing critical bugs and adding event management (registration & attendance). Built BNI Rise Community Dashboard for 100+ members with directory, events, and engagement analytics.",
+      "Developed and maintained a multi-platform ecosystem of dashboard-centric web applications — management dashboard, booking system, POS, kiosk, vending, and photobox — using Next.js (App Router), React 18, TypeScript, Tailwind CSS, and Shadcn/UI. Built complex UI workflows including data tables, filters, forms, analytics views, and real-time status monitoring. Implemented secure authentication flows, protected routes, and WebSocket-based real-time updates for multi-location monitoring. Owned features end-to-end with backend engineers, optimized Core Web Vitals (LCP, CLS, TBT), and drove refactoring initiatives on legacy codebases.",
     href: "https://wit.id/",
     tools: [
       "Next.js",
+      "React 18",
       "TypeScript",
       "Tailwind CSS",
       "Shadcn/UI",
-      "Jotai",
-      "Analytics",
+      "WebSocket",
     ],
   },
   {
     title: "Intern Front End Web Developer",
     work: "Anti Gravity",
+    period: "Jun 2024 – Aug 2024",
     description:
-      "Jun 2024 – Aug 2024. Built a gamified event website with interactive quiz personality test using Next.js, TypeScript, and Tailwind CSS. Delivered responsive UX with smooth interactions to boost brand engagement and awareness.",
+      "Built a gamified, form-heavy web application using Next.js, TypeScript, Tailwind CSS, and Shadcn/UI. Implemented interactive quiz flows, validation logic, and responsive layouts optimized for campaign traffic. Integrated REST APIs for business logic, result processing, and analytics tracking. Improved performance, browser compatibility, and accessibility across devices.",
     href: "https://antigravity.id/",
     tools: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn/UI"],
   },
   {
-    title: "Assistant Lecturer of Serious Game",
+    title: "Assistant Lecturer – Serious Game",
     work: "Muhammadiyah University of Yogyakarta",
+    period: "Mar 2023 – Jun 2023",
     description:
-      "Mar 2023 – Jun 2023. Assisted delivery of Serious Game course to 40+ students; facilitated discussions on game development & interactive tech; mentored JavaScript and problem-solving.",
+      "Assisted in delivering Serious Game course to 40+ students, facilitating discussions on game development and interactive technologies. Mentored students in programming fundamentals and problem-solving techniques for gamification web and mobile development.",
     href: "https://www.umy.ac.id/",
     tools: ["JavaScript", "Mentorship"],
   },
   {
     title: "Fullstack Web Developer",
     work: "PT. Blantika Alam Perkasa",
+    period: "Sep 2022 – Feb 2023",
     description:
-      "Sep 2022 – Feb 2023. Developed company profile website with CMS using Laravel, Tailwind CSS, and MySQL; deployed to Hostinger, stabilizing and establishing digital presence.",
+      "Developed a CMS-based company profile website using Laravel, Tailwind CSS, and MySQL, including REST API handling for dynamic content. Implemented responsive UI layouts and improved loading performance through optimized asset delivery. Deployed and maintained the application in production, ensuring stable and secure operation.",
     href: "https://www.linkedin.com/in/cassava-indonesia-5b323622a/?originalSubdomain=id",
-    tools: ["Laravel", "PHP", "Tailwind CSS", "MySQL", "Hostinger"],
+    tools: ["Laravel", "PHP", "Tailwind CSS", "MySQL"],
   },
   {
     title: "Fullstack Web Developer",
     work: "CV. Creative Gama Studio",
+    period: "Nov 2021 – Dec 2021",
     description:
-      "Nov 2021 – Dec 2021. Maintained rental property website with HTML, CSS, JS, PHP, MySQL; deployed updates to cPanel improving stability and UX.",
+      "Maintained and enhanced rental property platform using HTML, CSS, JavaScript, PHP, and MySQL. Troubleshot production bugs, improved UI consistency, and deployed updates via cPanel. Improved page loading time and stability through code cleanup and optimized queries.",
     href: "https://creativegamastudio.com/",
     tools: ["HTML", "CSS", "JavaScript", "PHP", "MySQL", "cPanel"],
   },
 ];
 
-export const projects: ProjectItem[] = [
-  {
-    image: "/habitat-ecosystem-smart-venue.jpg",
-    title: "Habitat Ecosystem",
-    description:
-      "Developed digital ecosystem for smart venue operations with six interconnected platforms (smart kiosk, photobox, vending, POS, dashboard, booking). Implemented real-time multi-location monitoring and responsive interfaces for consistent UX across devices.",
-    href: ["https://habitat.id/"],
-    tools: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn/UI"],
-  },
-  {
-    image: "https://gavrainvest.co.id/",
-    title: "Gavra - Trading Education Platform",
-    description:
-      "Built scalable platform connecting educators and learners with community features. Implemented dashboard for course management (content, enrollment, products) and analytics for engagement and completion.",
-    href: ["#"],
-    tools: ["Next.js", "React.js", "TypeScript", "Redux", "Tailwind CSS"],
-  },
-  {
-    image: "/bni-rise-community-dashboard.jpg",
-    title: "BNI Rise Community Dashboard",
-    description:
-      "Developed community management platform with member directory (search + filtering), event scheduling & registration, and engagement analytics for 500+ members.",
-    href: ["https://bnirise.com/"],
-    tools: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn/UI"],
-  },
-  {
-    image: "/la-live-bold-personality-test.jpg",
-    title: "LA - Live Bold Personality Test",
-    description:
-      "Gamified event website with interactive quiz-based personality test. Added engaging animations and smooth transitions, plus answer analysis for personalized recommendations and analytics tracking.",
-    href: ["https://www.livebold.id/"],
-    tools: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn/UI"],
-  },
-];
+export const projects: ProjectItem[] = portfolioCatalogItems.map(
+  ({ slug, featured, ...rest }) => rest
+);
 
 export const contacts: ContactLink[] = [
-  { type: "github", href: "https://github.com/vyaninsyanurmuhammad" },
+  { type: "github", href: "https://github.com/vyaninsyanurmuhamad" },
   {
     type: "linkedin",
-    href: "https://www.linkedin.com/in/vyaninsyanurmuhammad/",
+    href: "https://www.linkedin.com/in/vyaninsyanurmuhamad/",
   },
   {
     type: "instagram",
-    href: "https://www.instagram.com/vyaninsyanurmuhammad/",
+    href: "https://www.instagram.com/vyaninsyanurmuhamad/",
   },
   { type: "x", href: "https://x.com/NurVyan" },
   { type: "discord", href: "https://discordapp.com/users/pororo8058" },

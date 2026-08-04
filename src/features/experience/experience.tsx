@@ -1,46 +1,27 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Link from "next/link";
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import CursorSpotlight from "@/components/common/cursor-spotlight";
 import BrandIcon from "@/components/icons/brand-icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { BASE_CARDS } from "./data";
+import type { CardItem } from "./types/card";
 
-type CardItem = {
-  id: string;
-  title: string;
-  description: string;
-  x: number;
-  y: number;
-};
-
-const MAX_RANDOM_POSITION = 200;
+const MAX_X_RANDOM_POSITION = 1280;
+const MAX_Y_RANDOM_POSITION = 720;
 const CARD_SCALE_DRAGGING = 1.05;
 const CARD_SCALE_DEFAULT = 1;
+const CART_ROTATION_ANIMATE = 5;
+const MAX_CARD_ROTATION = 10;
+const MIN_CARD_ROTATION = -10;
 
 export default function Experience() {
   const boardRef = useRef<HTMLDivElement>(null);
-
-  const [cards, setCards] = useState<CardItem[]>([
-    { id: "1", title: "Card 1", description: "Drag me around", x: 50, y: 50 },
-    {
-      id: "2",
-      title: "Card 2",
-      description: "Free form placement",
-      x: 350,
-      y: 150,
-    },
-    {
-      id: "3",
-      title: "Card 3",
-      description: "Use transform translate",
-      x: 650,
-      y: 100,
-    },
-  ]);
-
+  const [cards, setCards] = useState<CardItem[]>(BASE_CARDS);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
@@ -94,8 +75,11 @@ export default function Experience() {
       id: Date.now().toString(),
       title: `Card ${cards.length + 1}`,
       description: "New card",
-      x: Math.random() * MAX_RANDOM_POSITION,
-      y: Math.random() * MAX_RANDOM_POSITION,
+      x: Math.random() * MAX_X_RANDOM_POSITION,
+      y: Math.random() * MAX_Y_RANDOM_POSITION,
+      rotate:
+        Math.random() * (MAX_CARD_ROTATION - MIN_CARD_ROTATION) +
+        MIN_CARD_ROTATION,
     };
     setCards([...cards, newCard]);
   };
@@ -157,14 +141,24 @@ export default function Experience() {
             tabIndex={0}
           >
             <motion.div
-              animate={{ rotate: 0 }}
-              className="w-80 select-none rounded-md border-none bg-zinc-800/80 p-0.5 shadow-lg transition-shadow hover:shadow-xl"
+              animate={{ rotate: card.rotate }}
+              className="group w-80 select-none rounded-md border-none bg-zinc-800/80 p-0.5 shadow-lg transition-shadow hover:bg-zinc-800/60 hover:shadow-xl"
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              whileHover={draggingId !== card.id ? { rotate: 2 } : {}}
+              whileHover={
+                draggingId !== card.id
+                  ? {
+                      rotate:
+                        card.rotate +
+                        (card.rotate > 0
+                          ? -CART_ROTATION_ANIMATE
+                          : CART_ROTATION_ANIMATE),
+                    }
+                  : {}
+              }
             >
               <div className="mr-6 flex items-center gap-1">
                 <Avatar className="m-3 rounded-full bg-zinc-900">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src="/images/design-mode/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-0.5">
@@ -176,8 +170,10 @@ export default function Experience() {
                   </div>
                 </div>
               </div>
-              <div className="aspect-video w-full rounded-md bg-zinc-950">
-                test
+              <div className="flex aspect-video w-full items-center justify-center rounded-md bg-zinc-950">
+                <Button className="bg-lime-600 opacity-0 transition-opacity duration-200 hover:bg-lime-600/90 group-hover:opacity-100">
+                  Check It Out
+                </Button>
               </div>
             </motion.div>
           </div>

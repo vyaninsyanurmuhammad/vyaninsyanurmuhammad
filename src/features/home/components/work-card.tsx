@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 const WorkCard = ({
   title,
   work,
+  period,
   description,
   href,
   isLast,
@@ -12,6 +13,7 @@ const WorkCard = ({
 }: {
   title?: string;
   work?: string;
+  period?: string;
   description?: string;
   href: string;
   isLast: boolean;
@@ -49,7 +51,7 @@ const WorkCard = ({
               </p>
               <Dot className="h-5 w-5 text-slate-400" />
               <p className="text-start text-slate-400 group-hover:text-slate-100">
-                Jun 2024 - Aug 2024
+                {period ?? "-"}
               </p>
             </div>
           </div>

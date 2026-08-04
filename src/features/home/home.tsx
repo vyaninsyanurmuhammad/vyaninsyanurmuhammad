@@ -12,6 +12,7 @@ import GitHubIcon from "@/components/icons/github-icon";
 import InstagramIcon from "@/components/icons/instagram-icon";
 import LinkedInIcon from "@/components/icons/linkedin-icon";
 import XIcon from "@/components/icons/x-icon";
+import PortfolioCatalogPreview from "@/features/portfolio-catalog/components/portfolio-catalog-preview";
 import { cn } from "@/lib/utils";
 import ProjectArchiveCard from "./components/project-archive-card";
 import WorkCard from "./components/work-card";
@@ -23,6 +24,7 @@ export default function Home() {
   const container = useRef<HTMLDivElement | null>(null);
   const aboutRef = useRef<HTMLParagraphElement>(null);
   const projectsRef = useRef(null);
+  const catalogRef = useRef<HTMLDivElement | null>(null);
   const jobsRef = useRef(null);
   const educationRef = useRef(null);
   const skillsRef = useRef(null);
@@ -32,6 +34,7 @@ export default function Home() {
     | "about"
     | "work"
     | "project"
+    | "catalog"
     | "education"
     | "skills"
     | "certificates"
@@ -45,6 +48,7 @@ export default function Home() {
       | "about"
       | "work"
       | "project"
+      | "catalog"
       | "education"
       | "skills"
       | "certificates";
@@ -52,6 +56,7 @@ export default function Home() {
       "about",
       "work",
       "project",
+      "catalog",
       "education",
       "skills",
       "certificates",
@@ -61,6 +66,7 @@ export default function Home() {
       { el: aboutRef.current as HTMLElement | null, key: "about" },
       { el: jobsRef.current as HTMLElement | null, key: "work" },
       { el: projectsRef.current as HTMLElement | null, key: "project" },
+      { el: catalogRef.current, key: "catalog" },
       { el: educationRef.current as HTMLElement | null, key: "education" },
       { el: skillsRef.current as HTMLElement | null, key: "skills" },
       {
@@ -146,6 +152,7 @@ export default function Home() {
             "about",
             "work",
             "project",
+            "catalog",
             "education",
             "skills",
             "certificates",
@@ -212,7 +219,7 @@ export default function Home() {
                   Hello, I&apos;m Vyan
                 </h1>
                 <span className="font-medium text-slate-100 text-xl">
-                  A Software Developer from Pati, Indonesia.
+                  A Frontend Engineer from Central Java, Indonesia.
                 </span>
               </div>
               <p className="w-full max-w-96 text-slate-400 text-xl">
@@ -235,7 +242,7 @@ export default function Home() {
                       Hello, I&apos;m Vyan
                     </h1>
                     <span className="font-medium text-slate-100 text-xl">
-                      A Software Developer from Pati, Indonesia.
+                      A Frontend Engineer from Central Java, Indonesia.
                     </span>
                   </div>
                   <p className="w-full max-w-96 text-slate-400 text-xl">
@@ -288,6 +295,18 @@ export default function Home() {
                   Since
                   <br />
                   2021
+                </motion.p>
+              )}
+              {isActive === "catalog" && (
+                <motion.p
+                  animate={{ opacity: 1 }}
+                  className="relative z-10 text-start font-semibold text-6xl text-white uppercase leading-[0.8] xl:text-6xl 2xl:text-7xl"
+                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0 }}
+                >
+                  Project
+                  <br />
+                  <span className="text-lime-500">Catalog</span>
                 </motion.p>
               )}
               {isActive === "education" && (
@@ -392,22 +411,22 @@ export default function Home() {
               ref={aboutRef}
             >
               <p className="text-slate-400">
-                Front End Developer with 2+ years experience building responsive
-                web apps using Next.js, TypeScript, and modern JavaScript
-                frameworks. Strong at translating design into functional,
-                accessible interfaces with clean code, performance focus, and
-                full‑stack awareness.
+                Frontend Engineer with 3+ years of experience building
+                responsive, detail-oriented web applications using Next.js,
+                React, and TypeScript. Owns features end-to-end in production —
+                from translating Figma designs into pixel-perfect, accessible
+                UIs to integrating RESTful APIs, managing complex state, and
+                optimizing Core Web Vitals.
               </p>
               <p className="text-slate-400">
-                Proven to ship in fast-paced environments: integrating
-                analytics, state management, and component systems (Shadcn/UI).
-                Passionate about crafting delightful, pixel‑perfect experiences
-                that work seamlessly across devices.
+                Experienced building real-time multi-platform systems, driving
+                refactoring of legacy codebases, and mentoring 40+ students in
+                programming fundamentals. Comfortable collaborating closely with
+                backend engineers, designers, and tech leads in remote,
+                cross-functional teams.
               </p>
               <p className="text-slate-400">
-                Comfortable across the stack: React.js, Next.js, Nest.js,
-                Express.js, Laravel, Flutter, Firebase, and MySQL. Continuously
-                learning and iterating to deliver high‑quality outcomes.
+                Open to relocation to Jakarta or remote work.
               </p>
             </section>
             <section
@@ -420,7 +439,10 @@ export default function Home() {
               </p>
               <ul className="group/list flex flex-col gap-0">
                 {works.map(
-                  ({ title, work, description, href, tools }, index) => {
+                  (
+                    { title, work, period, description, href, tools },
+                    index
+                  ) => {
                     const isLast = index === works.length - 1;
 
                     return (
@@ -432,6 +454,7 @@ export default function Home() {
                           description={description}
                           href={href}
                           isLast={isLast}
+                          period={period}
                           title={title}
                           tools={tools}
                           work={work}
@@ -474,6 +497,10 @@ export default function Home() {
                 <ArrowRight className="h-4 w-4 text-slate-100 group-hover:scale-125 group-hover:stroke-2 group-hover:text-lime-400" />
               </Link>
             </section>
+
+            <div className="pt-16 md:pt-20" ref={catalogRef}>
+              <PortfolioCatalogPreview />
+            </div>
 
             <div className="grid grid-cols-6 gap-2 pt-16 opacity-50 md:pt-20">
               <div className="relative flex h-full w-full items-center justify-center">
