@@ -42,6 +42,28 @@ export const portfolioCatalogItems: PortfolioCatalogItem[] = [
     featured: true,
   },
   {
+    slug: "konohapoly-discord-activity",
+    image: "/konohapoly-discord-activity.png",
+    title: "Konohapoly — Discord Activity",
+    description:
+      "Built a multiplayer property-trading board game themed around viral Indonesian places, playable by 2–6 players directly inside Discord voice channels as a Discord Activity. Rendered an isometric voxel board with React Three Fiber. Designed an authoritative Bun server (Hono API + WebSocket rooms per activity instance) with cryptographic RNG for dice and cards, a pure game-rules engine shared across server, bots, tests, and a Monte Carlo balance simulator, plus Discord OAuth2 and crash recovery via Redis snapshots.",
+    href: [
+      "https://discord.com/activities/1562451254016348273?referrer_id=501816005429952543",
+    ],
+    tools: [
+      "React",
+      "TypeScript",
+      "Three.js",
+      "Vite",
+      "Tailwind CSS",
+      "Bun",
+      "Hono",
+      "WebSocket",
+      "Discord SDK",
+    ],
+    featured: false,
+  },
+  {
     slug: "la-live-bold-personality-test",
     image: "/la-live-bold-personality-test.jpg",
     title: "LA – Live Bold Personality Test",
