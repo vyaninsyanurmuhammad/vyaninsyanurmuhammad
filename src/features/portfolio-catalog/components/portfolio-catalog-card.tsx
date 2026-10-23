@@ -130,7 +130,9 @@ const PortfolioCatalogCard = ({
                 type="button"
               >
                 <Link href={url} rel="noopener noreferrer" target="_blank">
-                  Visit Project
+                  {href.length > 1
+                    ? `Visit ${new URL(url).hostname}`
+                    : "Visit Project"}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>

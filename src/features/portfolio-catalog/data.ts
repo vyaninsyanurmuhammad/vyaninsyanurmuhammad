@@ -46,8 +46,9 @@ export const portfolioCatalogItems: PortfolioCatalogItem[] = [
     image: "/konohapoly-discord-activity.png",
     title: "Konohapoly — Discord Activity",
     description:
-      "Built a multiplayer property-trading board game themed around viral Indonesian places, playable by 2–6 players directly inside Discord voice channels as a Discord Activity. Rendered an isometric voxel board with React Three Fiber. Designed an authoritative Bun server (Hono API + WebSocket rooms per activity instance) with cryptographic RNG for dice and cards, a pure game-rules engine shared across server, bots, tests, and a Monte Carlo balance simulator, plus Discord OAuth2 and crash recovery via Redis snapshots.",
+      "Built a multiplayer property-trading board game themed around viral Indonesian places for 2–6 players, playable as a Discord Activity inside voice channels or straight from the browser — web guests and Discord players can share the same table via a room code or invite link. Rendered an isometric voxel board with React Three Fiber, with auctions, private rooms, host settings, and a leaderboard. Designed an authoritative Bun server (Hono API + WebSocket rooms) with cryptographic RNG for dice and cards, HMAC-signed guest sessions, rate limiting, and Redis snapshots for crash recovery, backed by a pure game-rules engine shared across server, bots, tests, and a Monte Carlo balance simulator.",
     href: [
+      "https://konohapoly.kursigoyang.net/",
       "https://discord.com/activities/1562451254016348273?referrer_id=501816005429952543",
     ],
     tools: [
